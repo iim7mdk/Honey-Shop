@@ -1,0 +1,9 @@
+.card-img-top {
+    height: 620px;
+    /* أو 300px حسب ما يناسبك */
+    object-fit: cover;
+    width: 100%;
+    /* تأكد أنها تمتد بعرض البطاقة */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}

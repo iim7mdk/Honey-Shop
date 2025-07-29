@@ -1,0 +1,108 @@
+<% layout('/layouts/boilerplate') %>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow rounded-4 border-0">
+                    <div class="card-body p-4">
+                        <h2 class="text-center mb-4 text-primary">🧴 Edit Perfume Details</h2>
+
+                        <form action="/perfumes/<%= perfume._id %>?_method=PUT" method="POST"
+                            enctype="multipart/form-data" novalidate>
+                            <!-- Title -->
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Perfume Name</label>
+                                <input type="text" class="form-control" id="title" name="perfume[title]"
+                                    value="<%= perfume.title %>" required>
+                            </div>
+
+                            <!-- Brand -->
+                            <div class="mb-3">
+                                <label for="brand" class="form-label">Brand</label>
+                                <input type="text" class="form-control" id="brand" name="perfume[brand]"
+                                value="<%= perfume.brand %>" required>
+                                <div class="invalid-feedback">Please enter the perfume brand.</div>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price (USD)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" step="0.01" class="form-control" id="price"
+                                        name="perfume[price]" value="<%= perfume.price %>" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="category">Category</label>
+                                <select class="form-select" id="category" name="perfume[category]" required>
+                                    <option disabled value="">Choose a category</option>
+                                    <option value="Men" <%=perfume.category==='Men' ? 'selected' : '' %>>Men
+                                    </option>
+                                    <option value="Women" <%=perfume.category==='Women' ? 'selected' : '' %>>Women
+                                    </option>
+                                    <option value="Kids" <%=perfume.category==='Kids' ? 'selected' : '' %>>Kids
+                                    </option>
+                                </select>
+                            
+                                <div class="valid-feedback">
+                                    Looks Good!
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="perfume[description]" rows="4"
+                                    required><%= perfume.description.trim() %></textarea>
+                            </div>
+
+                            <!-- Upload New Images -->
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Add More Images</label>
+                                <input type="file" class="form-control" id="image" name="image" multiple>
+                                <small class="text-muted">You can select multiple images.</small>
+                            </div>
+
+                            <!-- Existing Images with Delete Option -->
+                            <% if (perfume.images.length> 0) { %>
+                                <div class="mb-3">
+                                    <label class="form-label">Current Images</label>
+                                    <div class="row g-3">
+                                        <% perfume.images.forEach(function(img, i) { %>
+                                            <div class="col-6 col-md-4">
+                                                <div class="position-relative border rounded-3 p-1">
+                                                    <img src="<%= img.thumbnail %>" class="img-fluid rounded-2"
+                                                        alt="Perfume Image">
+                                                    <div class="form-check mt-2">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="image-<%= i %>" name="deleteImages[]"
+                                                            value="<%= img.filename %>">
+                                                        <label class="form-check-label small"
+                                                            for="image-<%= i %>">Delete</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                </div>
+                                <% } %>
+
+                                    <!-- Submit Button -->
+                                    <div class="d-grid mb-3">
+                                        <button type="submit" class="btn btn-success btn-lg rounded-pill">💾 Update
+                                            Perfume</button>
+                                    </div>
+
+                                    <!-- Back Link -->
+                                    <div class="text-center">
+                                        <a href="/perfumes/<%= perfume._id %>" class="text-decoration-none">← Back to
+                                            Perfume Page</a>
+                                    </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

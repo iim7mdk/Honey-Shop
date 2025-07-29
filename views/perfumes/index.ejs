@@ -1,0 +1,114 @@
+<% layout('/layouts/boilerplate') %>
+
+<link rel="stylesheet" href="/stylesheets/stars.css">
+
+    <div class="container py-5">
+        <!-- Heading and Add Button -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="display-5">All Perfumes</h1>
+            <a href="/perfumes/new" class="btn btn-success">+ Add New Perfume</a>
+        </div>
+
+        <form class="mb-4" method="GET" action="/perfumes" id="categoryFilterForm">
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <label class="form-label" for="searchInput">Search</label>
+                    <input type="text" class="form-control" name="search" id="searchInput"
+                        placeholder="Search perfumes..." value="<%= typeof search !== 'undefined' ? search : '' %>">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="categorySelect">Category</label>
+                    <select name="category" class="form-select" id="categorySelect">
+                        <option value="">-- All --</option>
+                        <option value="Men" <%=category==='Men' ? 'selected' : '' %>>Men</option>
+                        <option value="Women" <%=category==='Women' ? 'selected' : '' %>>Women</option>
+                        <option value="Kids" <%=category==='Kids' ? 'selected' : '' %>>Kids</option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </div>
+        </form>
+
+
+
+        <!-- Clear Filter Button -->
+        <% if (category || search) { %>
+            <a href="/perfumes" class="btn btn-outline-secondary mb-4">Clear Filter</a>
+            <% } %>
+
+                <!-- Perfume Cards -->
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <% for (let perfume of perfumes) { %>
+                        <div class="col">
+                            <!-- <div class="card h-100 shadow"> -->
+                            <div class="card h-100 d-flex flex-column shadow">
+                                <a href="/perfumes/<%= perfume._id %>" class="text-decoration-none text-dark">
+                                    <% if (perfume.images.length) { %>
+                                        <img class="card-img-top" src="<%= perfume.images[0].url %>"
+                                            alt="<%= perfume.title %>">
+                                        <% } else { %>
+                                            <img src="https://via.placeholder.com/400x300?text=No+Image"
+                                                class="card-img-top" alt="No image">
+                                            <% } %>
+
+                                                <div class="card-body d-flex flex-column">
+                                                    <h5 class="card-title">
+                                                        <%= perfume.title %>
+                                                            <span class="text-success float-end">$<%= perfume.price %>
+                                                            </span>
+                                                    </h5>
+
+                                                    <% 
+                                                    let total=0; 
+                                                    let count=perfume.reviews.length; 
+                                                    for (let review of perfume.reviews) { 
+                                                        total += review.rating;
+                                                    } 
+                                                    let avgRating = count ? total / count : 0;
+                                                    %>
+                                                    <% if(count !== 0){ %>
+                                                    <p class="starability-result" data-rating="<%= avgRating %>">Rated: <%= avgRating %> stars</p>
+                                                    <% } %>
+
+                                                    <p class="text-muted mb-1">
+                                                        Category: <%= perfume.category %>
+                                                    </p>
+                                                    <p class="card-text">
+                                                        <%= perfume.description.substring(0, 100) %>...
+                                                    </p>
+                                                </div>
+                                </a>
+
+                                <div class="px-3 pb-3 mt-auto">
+                                    <a href="/perfumes/<%= perfume._id %>" class="btn btn-outline-primary w-100">View
+                                        Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+
+    </div>
+
+    <!-- Category Filter Script -->
+    <script>
+        document.getElementById('categorySelect').addEventListener('change', function () {
+            document.getElementById('categoryFilterForm').submit();
+        });
+    </script>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        let timeout = null;
+
+        searchInput.addEventListener('input', function () {
+            clearTimeout(timeout);
+
+            // Wait 9500ms after typing stops
+            timeout = setTimeout(() => {
+                document.getElementById('categoryFilterForm').submit();
+            }, 9500);
+        });
+    </script>
