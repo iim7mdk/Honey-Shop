@@ -101,8 +101,9 @@ app.use(
         "data:",
         "https://ik.imagekit.io/m7md/",
         "https://images.unsplash.com/",
+        "https://images.pexels.com/", 
         "https://api.maptiler.com/",
-      ],
+      ],      
       fontSrc: ["'self'", ...fontSrcUrls],
     },
   })
