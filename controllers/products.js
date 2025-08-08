@@ -46,7 +46,7 @@ module.exports.createProduct = async (req, res) => {
     product.images = images;
     await product.save();
 
-    req.flash('success', 'Successfully added the product!');
+    req.flash('success', 'تمت إضافة المنتج بنجاح!');
     res.redirect(`/products/${product._id}`);
 }
 
@@ -62,7 +62,7 @@ module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
     if (!product) {
-        req.flash('error', 'Cannot find that product!');
+        req.flash('error', 'لا يمكن ايجاد هذا المنتج!');
         return res.redirect('/products');
     }
     console.log(product.images);
@@ -95,13 +95,13 @@ module.exports.updateProduct = async (req, res) => {
         }
         await product.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
     }
-    req.flash('success', 'Successfully updated product!');
+    req.flash('success', 'تم تحديث المنتج بنجاح!');
     res.redirect(`/products/${product._id}`);
 }
 
 module.exports.deleteProduct = async (req, res) => {
     const { id } = req.params;
     await Product.findByIdAndDelete(id);
-    req.flash('success', 'Successfully deleted product');
+    req.flash('success', 'تم حذف المنتج بنجاح!');
     res.redirect('/products');
 }

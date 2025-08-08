@@ -12,7 +12,7 @@ module.exports.register = async (req, res) => {
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err => {
             if (err) return next(err);
-            req.flash('success', 'Welcome to Perfume-Shop!');
+            req.flash('success', '!اهلا بك في متجر العسل');
             res.redirect('/products');
         });
     } catch (e) {
@@ -37,7 +37,7 @@ module.exports.logout = (req, res) => {
         if (err) {
             return next(err);
         }
-        req.flash('success', 'Goodbye!');
+        req.flash('success', 'إلى اللقاء!');
         res.redirect('/products');
     });
 }
