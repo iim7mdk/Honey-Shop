@@ -13,7 +13,7 @@ module.exports.register = async (req, res) => {
         req.login(registeredUser, err => {
             if (err) return next(err);
             req.flash('success', 'Welcome to Perfume-Shop!');
-            res.redirect('/perfumes');
+            res.redirect('/products');
         });
     } catch (e) {
         req.flash('error', e.message);
@@ -27,7 +27,7 @@ module.exports.renderLogin = (req, res) => {
 
 module.exports.login = (req, res) => {
     req.flash('success', 'welcome back!');
-    const redirectUrl = res.locals.returnTo || '/perfumes';
+    const redirectUrl = res.locals.returnTo || '/products';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 }
@@ -38,6 +38,6 @@ module.exports.logout = (req, res) => {
             return next(err);
         }
         req.flash('success', 'Goodbye!');
-        res.redirect('/perfumes');
+        res.redirect('/products');
     });
 }
