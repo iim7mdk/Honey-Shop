@@ -12,12 +12,10 @@ ImageSchema.virtual('thumbnail').get(function () {
 });
 
 
-const PerfumeSchema = new Schema({
+const ProductSchema = new Schema({
     title: String,
-    brand: String,
     description: String,
     price: Number,
-    category: String, // رجالي - نسائي - أطفال
     images: [ImageSchema],
     author: {
         type: Schema.Types.ObjectId,
@@ -31,4 +29,4 @@ const PerfumeSchema = new Schema({
     ]
 }, { toJSON: { virtuals: true } });
 
-module.exports = mongoose.model('Perfume', PerfumeSchema);
+module.exports = mongoose.model('Product', ProductSchema);

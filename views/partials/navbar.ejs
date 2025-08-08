@@ -1,25 +1,100 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Perfume-Shop</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-warning" href="/">Abu Elias</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link " href="/">Home</a>
-                <a class="nav-link" href="/perfumes">Perfumes</a>
-                <a class="nav-link" href="/perfumes/new">New Perfume</a>
-            </div>
-            <div class="navbar-nav ms-auto">
-                <% if(!currentUser){ %>
-                    <a class="nav-link" href="/login">Login</a>
-                    <a class="nav-link" href="/register" name="register">Sign Up</a>
-                    <% } else { %>
-                        <a class="nav-link" href="/logout">Logout</a>
-                        <% } %>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">الرئيسية</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">المنتجات</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">من نحن</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">تواصل معنا</a>
+                </li>
+                <% // if (!currentUser) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">تسجيل الدخول</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">إنشاء حساب</a>
+                    </li>
+                    <% // } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">تسجيل الخروج</a>
+                        </li>
+                        <% // } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+ -->
 
-            </div>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fff8e1; border-bottom: 2px solid #f4c430;">
+    <div class="container px-4 px-lg-5">
+        <!-- شعار الموقع -->
+        <a class="navbar-brand fw-bold" href="/" style="color: #8b5e3c; font-size: 1.5rem;">
+            <img src="/images/logo.png" alt="" style="height: 40px; margin-left: 8px;">
+            Abu Elias
+        </a>
+
+        <!-- زر القائمة للموبايل -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- عناصر النافبار -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- الروابط الأساسية في المنتصف -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/" style="color: #5a3e2b;">الرئيسية</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/products" style="color: #5a3e2b;">المنتجات</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/about" style="color: #5a3e2b;">من نحن</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="/contact" style="color: #5a3e2b;">تواصل معنا</a>
+                </li>
+            </ul>
+
+            <!-- أزرار تسجيل الدخول/التسجيل أو تسجيل الخروج في يسار النافبار -->
+            <ul class="navbar-nav ms-auto">
+                <% if (!currentUser) { %>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-warning mx-1" href="/login">تسجيل الدخول</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-warning text-white mx-1" href="/register">إنشاء حساب</a>
+                    </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="btn btn-danger text-white mx-1" href="/logout">تسجيل الخروج</a>
+                        </li>
+                        <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+            
+            <!-- <form class="d-flex">
+                <button class="btn btn-outline-dark" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </button>
+            </form> -->
         </div>
     </div>
 </nav>

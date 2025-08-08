@@ -1,0 +1,52 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="container py-5" dir="rtl">
+        <div class="row g-5 align-items-center">
+
+            <!-- صورة المنتج -->
+            <div class="col-lg-6">
+                <div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-sm border" style="border-color: #f4c430;">
+                    <img src="<%= product.images[0].url %>" class="img-fluid object-fit-cover"
+                        alt="<%= product.name %>">
+                </div>
+            </div>
+
+            <!-- تفاصيل المنتج -->
+            <div class="col-lg-6">
+                <div class="p-4 bg-light rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <h1 class="fw-bold mb-3" style="color:#5a3e2b;">
+                            <%= product.name %>
+                        </h1>
+
+                        <p class="text-muted mb-4 fs-5">
+                            <%= product.description %>
+                        </p>
+
+                        <h3 class="fw-bold mb-4" style="color:#b7791f;">
+                            <%= product.price.toLocaleString() %>
+                                <span class="fs-6 text-dark">ريال</span>
+                        </h3>
+
+                        <% if (product.reviews.length> 0) {
+                            let total = 0;
+                            for (let r of product.reviews) total += r.rating;
+                            let avgRating = total / product.reviews.length;
+                            %>
+                            <p class="starability-result" data-rating="<%= avgRating %>">
+                                التقييم: <%= avgRating.toFixed(1) %> / 5
+                            </p>
+                            <% } %>
+                    </div>
+
+                    <div>
+                        <a href="/products/<%= product._id %>/buy"
+                            class="btn btn-warning text-white btn-lg w-100 shadow-sm">
+                            شراء الآن
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

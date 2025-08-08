@@ -25,13 +25,11 @@ const extension = (joi) => ({
 const Joi = BaseJoi.extend(extension);
 
 // ✅ Schema for creating or editing a perfume
-module.exports.perfumeSchema = Joi.object({
-    perfume: Joi.object({
+module.exports.productSchema = Joi.object({
+    product: Joi.object({
         title: Joi.string().required().escapeHTML(),
         price: Joi.number().required().min(0),
-        brand: Joi.string().required().escapeHTML(),
         description: Joi.string().required().escapeHTML(),
-        category: Joi.string().valid('Men', 'Women', 'Kids').required()
     }).required(),
     deleteImages: Joi.array()  // optional for handling image deletions
 });

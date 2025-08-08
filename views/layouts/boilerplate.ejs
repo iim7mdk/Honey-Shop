@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfume-Shop</title>
+    <title>AbuElias</title>
     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
     integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
@@ -17,6 +17,9 @@
     <link crossorigin="anonymous" href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css"
         rel="stylesheet">
 
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    
     <link rel="stylesheet" href="/stylesheets/app.css">
 
 
@@ -24,9 +27,11 @@
 
 </head>
 
-<body class="d-flex flex-column vh-100">
+<!-- <body class="d-flex flex-column vh-100" dir="rtl"> -->
+    <body class="d-flex flex-column min-vh-100" dir="rtl">
     <%- include('../partials/navbar') %>
-        <main class="container mt-5">
+        <!-- <main class="container mt-5"> -->
+            <main class="container mt-5 flex-grow-1">
             <%- include('../partials/flash') %>
                 <%- body %>
         </main>

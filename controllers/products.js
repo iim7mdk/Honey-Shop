@@ -1,4 +1,4 @@
-const Perfume = require('../models/perfume');
+const Product = require('../models/product');
 
 const imageKit = require('../imageKit/index');
 const { uploadToImageKit } = require('../imageKit');
@@ -16,24 +16,23 @@ module.exports.index = async (req, res) => {
             { description: regex }
         ];
     }
-    const perfumes = await Perfume.find(filter)
+    const products = await Product.find(filter)
         .populate({
             path: 'reviews',
             populate: {
                 path: 'author'
             }
-        })
-    res.render('perfumes/index', { perfumes, category, search });
+        });
+    res.render('products/index', { products, category, search });
 }
-
 
 module.exports.renderNewForm = (req, res) => {
-    res.render('perfumes/new');
+    res.render('products/new');
 }
 
-module.exports.createPerfume = async (req, res) => {
-    const perfume = new Perfume(req.body.perfume);
-    perfume.author = req.user._id;
+module.exports.createProduct = async (req, res) => {
+    const product = new Product(req.body.product);
+    product.author = req.user._id;
 
     const images = [];
     for (let file of req.files) {
@@ -44,37 +43,35 @@ module.exports.createPerfume = async (req, res) => {
         });
     }
 
-    perfume.images = images;
-    await perfume.save();
+    product.images = images;
+    await product.save();
 
-    req.flash('success', 'successfuly added the Perfume!');
-    res.redirect(`/perfumes/${perfume._id}`);
+    req.flash('success', 'Successfully added the product!');
+    res.redirect(`/products/${product._id}`);
 }
 
-
-module.exports.showPerfume = async (req, res) => {
-    const perfume = await Perfume.findById(req.params.id).populate('author').populate({
+module.exports.showProduct = async (req, res) => {
+    const product = await Product.findById(req.params.id).populate('author').populate({
         path: 'reviews',
         populate: { path: 'author' }
     });
-    res.render('perfumes/show', { perfume });
+    res.render('products/show', { product });
 }
 
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params;
-    const perfume = await Perfume.findById(id);
-    if (!perfume) {
-        req.flash('error', 'Cannot find that perfume!');
-        return res.redirect('/perfumes');
+    const product = await Product.findById(id);
+    if (!product) {
+        req.flash('error', 'Cannot find that product!');
+        return res.redirect('/products');
     }
-    console.log(perfume.images);
-    res.render('perfumes/edit', { perfume });
+    console.log(product.images);
+    res.render('products/edit', { product });
 }
 
-module.exports.updatePerfume = async (req, res) => {
+module.exports.updateProduct = async (req, res) => {
     const { id } = req.params;
-    // console.log(req.body);
-    const perfume = await Perfume.findByIdAndUpdate(id, { ...req.body.perfume });
+    const product = await Product.findByIdAndUpdate(id, { ...req.body.product });
     const uploadedImages = await Promise.all(
         req.files.map(file => uploadToImageKit(file))
     );
@@ -83,11 +80,11 @@ module.exports.updatePerfume = async (req, res) => {
         filename: img.name,
         fileId: img.fileId
     }));
-    perfume.images.push(...imgs);
-    await perfume.save();
+    product.images.push(...imgs);
+    await product.save();
     if (req.body.deleteImages) {
         for (let filename of req.body.deleteImages) {
-            const image = perfume.images.find(img => img.filename === filename);
+            const image = product.images.find(img => img.filename === filename);
             if (image && image.fileId) {
                 try {
                     await imageKit.imagekit.deleteFile(image.fileId);
@@ -96,16 +93,15 @@ module.exports.updatePerfume = async (req, res) => {
                 }
             }
         }
-        await perfume.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
-        // console.log(perfume);
+        await product.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
     }
-    req.flash('success', 'successfully updated perfume!');
-    res.redirect(`/perfumes/${perfume._id}`);
+    req.flash('success', 'Successfully updated product!');
+    res.redirect(`/products/${product._id}`);
 }
 
-module.exports.deletePerfume = async (req, res) => {
+module.exports.deleteProduct = async (req, res) => {
     const { id } = req.params;
-    await Perfume.findByIdAndDelete(id);
-    req.flash('success', 'successfully deleted perfume');
-    res.redirect('/perfumes');
+    await Product.findByIdAndDelete(id);
+    req.flash('success', 'Successfully deleted product');
+    res.redirect('/products');
 }

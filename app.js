@@ -16,25 +16,26 @@ const User = require('./models/user');
 
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
-
-const userRoutes = require('./routes/users');
-const perfumeRoutes = require('./routes/perfumes');
-const reviewRoutes = require('./routes/reviews');
 const MongoStore = require('connect-mongo');
 
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/perfume-shop';
+// 🐝 Routes
+const userRoutes = require('./routes/users');
+const productRoutes = require('./routes/products');
+const reviewRoutes = require('./routes/reviews');
+
+// 📦 Database
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/abu-elias';
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-  console.log("Database connected");
+  console.log("📦 Database connected");
 });
 
 const app = express();
 
-
-
+// 🔧 App Settings
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -44,6 +45,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize({ replaceWith: '_' }));
 
+// 🧠 Session Store
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
@@ -62,10 +64,12 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7
   }
 };
+
 app.use(session(sessionConfig));
 app.use(flash());
 app.use(helmet());
 
+// 🔐 Helmet CSP Configuration
 const scriptSrcUrls = [
   "https://stackpath.bootstrapcdn.com/",
   "https://kit.fontawesome.com/",
@@ -88,6 +92,7 @@ const fontSrcUrls = [];
 
 app.use(
   helmet.contentSecurityPolicy({
+    crossOriginEmbedderPolicy: false,
     directives: {
       defaultSrc: [],
       connectSrc: ["'self'", ...connectSrcUrls],
@@ -101,20 +106,22 @@ app.use(
         "data:",
         "https://ik.imagekit.io/m7md/",
         "https://images.unsplash.com/",
-        "https://images.pexels.com/", 
+        "https://images.pexels.com/",
         "https://api.maptiler.com/",
-      ],      
+      ],
       fontSrc: ["'self'", ...fontSrcUrls],
     },
   })
 );
 
+// 🔐 Passport
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// 🌐 Flash + Global Variables
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   res.locals.success = req.flash('success');
@@ -122,31 +129,29 @@ app.use((req, res, next) => {
   next();
 });
 
+// 🛣 Routes
 app.use('/', userRoutes);
-app.use('/perfumes', perfumeRoutes);
-app.use('/perfumes/:id/reviews', reviewRoutes);
+app.use('/products', productRoutes);
+app.use('/products/:id/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
-  res.render('home');
+  res.render('home'); // views/home.ejs
 });
 
-
+// ❌ 404 Handler
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found!', 404));
 });
 
+// ⚠️ Error Handler
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
   if (!err.message) err.message = "Oh No, Something Went Wrong!";
   res.status(statusCode).render('error', { err });
 });
 
+// 🚀 Server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Serving on port ${port}`);
+  console.log(`🚀 Serving AbuElias on port ${port}`);
 });
-
-
-// app.listen(3000, () => {
-//   console.log('Serving on port 3000');
-// });
